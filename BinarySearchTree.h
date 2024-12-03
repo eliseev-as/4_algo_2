@@ -17,17 +17,17 @@ public:
     }
 
     // Публичный метод для вставки нового значения в дерево
-    void insert(int value) {
+    void insert(const int value) {
         root = insert(root, value);
     }
 
     // Публичный метод для удаления значения из дерева
-    void remove(int value) {
+    void remove(const int value) {
         root = remove(root, value);
     }
 
     // Публичный метод для поиска значения в дереве
-    int search(int value) {
+    int search(const int value) {
         return search(root, value) != nullptr;
     }
 
@@ -45,14 +45,14 @@ private:
         Node *right; // Указатель на правого потомка
 
         // Конструктор для создания нового узла с заданным значением
-        Node(int value) : value(value), left(nullptr), right(nullptr) {
+        explicit Node(const int value) : value(value), left(nullptr), right(nullptr) {
         }
     };
 
     Node *root; // Корень дерева
 
     // Приватный метод для вставки нового значения в дерево
-    Node *insert(Node *root, int value) {
+    Node *insert(Node *root, const int value) {
         // Если дерево пустое, создаем новый корень
         if (root == nullptr) {
             return new Node(value);
@@ -72,7 +72,7 @@ private:
     }
 
     // Приватный метод для поиска значения в дереве
-    Node *search(Node *root, int value) {
+    Node *search(Node *root, const int value) {
         // Если дерево пустое или значение найдено, возвращаем корень
         if (root == nullptr || root->value == value) {
             return root;
@@ -88,7 +88,7 @@ private:
     }
 
     // Приватный метод для нахождения узла с минимальным значением в дереве
-    Node *findMin(Node *root) {
+    static Node *findMin(Node *root) {
         while (root->left != nullptr) {
             root = root->left;
         }
@@ -96,7 +96,7 @@ private:
     }
 
     // Приватный метод для удаления значения из дерева
-    Node *remove(Node *root, int value) {
+    Node *remove(Node *root, const int value) {
         // Если дерево пустое, возвращаем nullptr
         if (root == nullptr) {
             return nullptr;
@@ -128,10 +128,10 @@ private:
             // Если у корня есть оба потомка
 
             // Находим узел с минимальным значением в правом поддереве
-            Node *temp = findMin(root->right);
+            const Node *temp = findMin(root->right);
             // Копируем значение этого узла в корень
             root->value = temp->value;
-            // Удаляем этот узел из правого подерева
+            // Удаляем этот узел из правого поддерева
             root->right = remove(root->right, temp->value);
         }
 
@@ -145,7 +145,7 @@ private:
     }
 
     // Приватный рекурсивный метод-помощник для печати
-    void inorderHelper(Node *root) {
+    void inorderHelper(const Node *root) {
         // Если дерево не пустое
         if (root != nullptr) {
             // Обходим левое поддерево
