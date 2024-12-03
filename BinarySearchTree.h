@@ -71,12 +71,72 @@ private:
         return root;
     }
 
-    // Приватный метод для удаления значения из дерева
-    Node *remove(Node *root, int value) {
-    }
-
     // Приватный метод для поиска значения в дереве
     Node *search(Node *root, int value) {
+        // Если дерево пустое или значение найдено, возвращаем корень
+        if (root == nullptr || root->value == value) {
+            return root;
+        }
+
+        // Если значение меньше значения корня, ищем его в левом поддереве
+        if (value < root->value) {
+            return search(root->left, value);
+        }
+
+        // Иначе ищем его в правом поддереве
+        return search(root->right, value);
+    }
+
+    // Приватный метод для нахождения узла с минимальным значением в дереве
+    Node *findMin(Node *root) {
+        while (root->left != nullptr) {
+            root = root->left;
+        }
+        return root;
+    }
+
+    // Приватный метод для удаления значения из дерева
+    Node *remove(Node *root, int value) {
+        // Если дерево пустое, возвращаем nullptr
+        if (root == nullptr) {
+            return nullptr;
+        }
+
+        // Если значение меньше значения корня, удаляем его из левого поддерева
+        if (value < root->value) {
+            root->left = remove(root->left, value);
+        }
+        // Если значение больше значения корня, удаляем его из правого поддерева
+        else if (value > root->value) {
+            root->right = remove(root->right, value);
+        }
+        // Иначе удаляем корень
+        else {
+            // Если у корня нет потомков или только один потомок
+            if (root->left == nullptr) {
+                Node *temp = root->right;
+                delete root;
+                return temp;
+            }
+
+            if (root->right == nullptr) {
+                Node *temp = root->left;
+                delete root;
+                return temp;
+            }
+
+            // Если у корня есть оба потомка
+
+            // Находим узел с минимальным значением в правом поддереве
+            Node *temp = findMin(root->right);
+            // Копируем значение этого узла в корень
+            root->value = temp->value;
+            // Удаляем этот узел из правого подерева
+            root->right = remove(root->right, temp->value);
+        }
+
+        // Возвращаем новый корень дерева
+        return root;
     }
 
     // Приватный метод для печати узлов дерева в порядке возрастания
