@@ -141,6 +141,20 @@ private:
 
     // Приватный метод для печати узлов дерева в порядке возрастания
     void inorder() {
+        inorderHelper(root);
+    }
+
+    // Приватный рекурсивный метод-помощник для печати
+    void inorderHelper(Node *root) {
+        // Если дерево не пустое
+        if (root != nullptr) {
+            // Обходим левое поддерево
+            inorderHelper(root->left);
+            // Печатаем значение корня
+            cout << root->value << ' ';
+            // Обходим правое поддерево
+            inorderHelper(root->right);
+        }
     }
 };
 
